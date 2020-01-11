@@ -1,5 +1,6 @@
 #pypng
 import png, os
+from mazegen import Maze
 from shutil import rmtree
 from random import randint, sample
 '''
@@ -9,18 +10,13 @@ from random import randint, sample
 ||  data or as an image file.
 =====================================================================
 '''
-class mazegen:
+class MazeGenerator:
     def __init__(self):
         self._black = (0, 0, 0)
         self._white = (255, 255, 255)
         self._red   = (255, 0, 0)
         self._green = (0, 255, 0)
         self._blue  = (0, 0, 255)
-
-        self._CELL_WALL     = 0
-        self._CELL_PATH     = 1
-        self._CELL_START    = 2
-        self._CELL_END      = 3
 
         self._TOP       = 0
         self._BOTTOM    = 1
@@ -33,7 +29,7 @@ class mazegen:
         self._FRAME_FILE_TYPE   = ".png"
         self._frame = 0
 
-        self._maze = []
+        self._maze = Maze.Maze()
 
     #Color Getters
     @property

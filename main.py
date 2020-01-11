@@ -1,8 +1,8 @@
-from mazegen import mazegen
+from mazegen import MazeGenerator
 
 def main():
     print("Instantiating MazeGen object...")
-    maze_gen = mazegen.mazegen()
+    maze_gen = MazeGenerator.MazeGenerator()
     maze_gen.generate(32, True)
     return
 

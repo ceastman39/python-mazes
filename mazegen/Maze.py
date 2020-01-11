@@ -1,9 +1,10 @@
 class Maze:
     def __init__(self, height, width):
-        self._CELL_WALL     = 0
-        self._CELL_PATH     = 1
-        self._CELL_START    = 2
-        self._CELL_END      = 3
+        self._CELL_WALL       = 0
+        self._CELL_PATH       = 1
+        self._CELL_START      = 2
+        self._CELL_END        = 3
+        self._CELL_PATH_STACK = 4
 
         self._height    = height
         self._width     = width
@@ -17,9 +18,9 @@ class Maze:
     def __setitem__(self, index, value):
         this._data[index] = value
 
-    # ====================
-    # START GETTERS/SETTER
-    # ====================
+    # =====================
+    # START GETTERS/SETTERS
+    # =====================
     @property
     def data(self):
         return self._data
@@ -61,6 +62,14 @@ class Maze:
         raise AttributeError("Cannot change the value of CELL_END")
 
     @property
+    def CELL_PATH_STACK(self):
+        return self._CELL_PATH_STACK
+
+    @CELL_PATH_STACK.setter
+    def CELL_PATH_STACK(self, value):
+        raise AttributeError("Cannot change the value of CELL_PATH_STACK")
+
+    @property
     def width(self):
         return self._width
 
@@ -75,6 +84,6 @@ class Maze:
     @height.setter
     def height(self, value):
         raise AttributeError("Cannot change the value of height outside of the object declaration.")
-    # ====================
-    # END GETTERS/SETTER
-    # ====================
+    # =====================
+    #  END GETTERS/SETTERS
+    # =====================

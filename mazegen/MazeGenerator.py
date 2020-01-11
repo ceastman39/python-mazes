@@ -9,7 +9,8 @@ from random import randint, sample
 # =====================================================================
 class MazeGenerator:
     def __init__(self):
-        self._maze_visualizer = MazeVisualizer.MazeVisualizer(framerate = 45, upscale_factor = 5)
+        self._maze_visualizer = MazeVisualizer.MazeVisualizer(framerate = 45,
+                                                              upscale_factor = 8)
         self._maze = None
 
     @property
@@ -19,27 +20,44 @@ class MazeGenerator:
     # ================================================
     # || __create_maze:
     # ||  Generate a 2D Integer Array containing data
-    # ||  for a solveable maze.
+    # ||  for a solveable maze. Starts off all cells
+    # ||  as "walls."
     # ================================================
     def __create_maze(self, cell):
+        # Capture a frame if recording a video of the generation.
+        # This sets the cell to the type CELL_PATH_STACK, which is
+        # the same as a normal path, except the MazeVisualizer class
+        # sets the cell to a different color. It will be set back
+        # to a normal path cell when popped off the stack.
         if(self._maze_visualizer.IS_RECORDING):
             self._maze[cell[0]][cell[1]] = self._maze.CELL_PATH_STACK
             self._maze_visualizer.generate_frame(self._maze)
         else:
             self._maze[cell[0]][cell[1]] = self._maze.CELL_PATH
 
-        #Randomize check order.
+        # Randomize the order of which adjacent cells to check.
         func_list = sample([self.__check_top, self.__check_bottom,
                             self.__check_left, self.__check_right], 4)
 
+        # Then, execute the randomized list.
         for func in func_list:
             ret_val = func(cell)
+            # If the cell given i the function is valid, push it on the stack.
             if(ret_val[0] != -1):
                 self.__create_maze(ret_val)
+
+
+        # Set the cell back to a normal path cell when popped off the stack.
         if(self._maze_visualizer.IS_RECORDING):
             self._maze[cell[0]][cell[1]] = self._maze.CELL_PATH
             self._maze_visualizer.generate_frame(self._maze)
         return
+
+    # All of the following 'check' functions check the adjacent cells of
+    # the given cell to see if they would be valid paths. Returns a tuple
+    # of (-1, -1) if invalid, else returns the checked cell's coordinate.
+    # These functions are seperated to randomize the order in which the
+    # adjacent cells are checked.
 
     def __check_top(self, cell):
         check_cell = (cell[0] - 1, cell[1])
@@ -69,6 +87,7 @@ class MazeGenerator:
                 return check_cell
         return (-1, -1)
 
+    # Checks all adjacent cells to see if
     def __check_valid(self, cell):
         num_adjacent_walls = 0
         #Top

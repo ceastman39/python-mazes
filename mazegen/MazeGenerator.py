@@ -1,5 +1,5 @@
 import png, os
-from mazegen import Maze, MazeVisualizer
+from mazegen import Maze, MazeVisualizer, MazeNode
 from random import randint, sample
 
 # =====================================================================
@@ -23,94 +23,40 @@ class MazeGenerator:
     # ||  for a solveable maze. Starts off all cells
     # ||  as "walls."
     # ================================================
-    def __create_maze(self, cell):
-        # Capture a frame if recording a video of the generation.
-        # This sets the cell to the type CELL_PATH_STACK, which is
-        # the same as a normal path, except the MazeVisualizer class
-        # sets the cell to a different color. It will be set back
-        # to a normal path cell when popped off the stack.
-        if(self._maze_visualizer.IS_RECORDING):
-            self._maze[cell[0]][cell[1]] = self._maze.CELL_PATH_STACK
-            self._maze_visualizer.generate_frame(self._maze)
-        else:
-            self._maze[cell[0]][cell[1]] = self._maze.CELL_PATH
-
-        # Randomize the order of which adjacent cells to check.
-        func_list = sample([self.__check_top, self.__check_bottom,
-                            self.__check_left, self.__check_right], 4)
-
-        # Then, execute the randomized list.
-        for func in func_list:
-            ret_val = func(cell)
-            # If the cell given i the function is valid, push it on the stack.
-            if(ret_val[0] != -1):
-                self.__create_maze(ret_val)
+    #def __create_maze(self, cell):
 
 
-        # Set the cell back to a normal path cell when popped off the stack.
-        if(self._maze_visualizer.IS_RECORDING):
-            self._maze[cell[0]][cell[1]] = self._maze.CELL_PATH
-            self._maze_visualizer.generate_frame(self._maze)
-        return
 
-    # All of the following 'check' functions check the adjacent cells of
-    # the given cell to see if they would be valid paths. Returns a tuple
-    # of (-1, -1) if invalid, else returns the checked cell's coordinate.
-    # These functions are seperated to randomize the order in which the
-    # adjacent cells are checked.
+    def __create_maze_ellers(self, width, height):
+        #Create first row, each node is it's own set.
+        row = [MazeNode.MazeNode(default_node_value = False, set = i+1) for i in range(self._maze.width)]
+        row[0].left_node = True
 
-    def __check_top(self, cell):
-        check_cell = (cell[0] - 1, cell[1])
-        if(check_cell[0] >= 0):
-            if(self.__check_valid(check_cell)):
-                return check_cell
-        return (-1, -1)
+        for i in range(1, self._maze.width):
 
-    def __check_bottom(self, cell):
-        check_cell = (cell[0] + 1, cell[1])
-        if(check_cell[0] < self._maze.height):
-            if(self.__check_valid(check_cell)):
-                return check_cell
-        return (-1, -1)
+            # Randomly union together sets of cells
+            if(randint(0, 1) == 1):
+                row[i].node_set = row[i-1].node_set
+            else:
+                row[i].left_node = True
+                row[i-1].right_node = True
+        row[self._maze.width-1].right_node = True
 
-    def __check_left(self, cell):
-        check_cell = (cell[0], cell[1] - 1)
-        if(check_cell[1] >= 0):
-            if(self.__check_valid(check_cell)):
-                return check_cell
-        return (-1, -1)
+        #Add bottom floor
+        bottom_in_set = False
+        curr_set = row[0].node_set
+        for x in range(self._maze.width - 1):
+            if(row[i+1])
+            #=======TODO=======
 
-    def __check_right(self, cell):
-        check_cell = (cell[0], cell[1] + 1)
-        if(check_cell[1] < self._maze.width):
-            if(self.__check_valid(check_cell)):
-                return check_cell
-        return (-1, -1)
+        self._maze.append(row)
+        self._maze.append(row)
+        #Add top
+        for node in self._maze[0]:
+            node.top_node = True
 
-    # Checks all adjacent cells to see if
-    def __check_valid(self, cell):
-        num_adjacent_walls = 0
-        #Top
-        if(cell[0] - 1 < 0 or self._maze[cell[0] - 1][cell[1]] == self._maze.CELL_WALL):
-            num_adjacent_walls += 1
-
-        #Bottom
-        if(cell[0] + 1 >= self._maze.height or self._maze[cell[0] + 1][cell[1]] == self._maze.CELL_WALL):
-            num_adjacent_walls += 1
-
-        #Left
-        if(cell[1] - 1 < 0 or self._maze[cell[0]][cell[1] - 1] == self._maze.CELL_WALL):
-            num_adjacent_walls += 1
-
-        #Right
-        if(cell[1] + 1 >= self._maze.width or self._maze[cell[0]][cell[1] + 1] == self._maze.CELL_WALL):
-            num_adjacent_walls += 1
-
-        if(num_adjacent_walls >= 3):
-            return True
-
-        return False
-
+        for y in range(1, self._maze.height):
+            for node in self._maze[y]:
 
 
     # ========================================
@@ -122,14 +68,15 @@ class MazeGenerator:
         if(record_vid):
             self._maze_visualizer.start_recording()
         #Randomly select start cell.
-        start_cell = (randint(0, height), randint(0, width))
+        #start_cell = (randint(0, height), randint(0, width))
         #Initiate maze creation.
-        self.__create_maze(start_cell)
-        self._maze[start_cell[0]][start_cell[1]] = self._maze.CELL_START
+        #self.__create_maze(start_cell)
+        #self._maze[start_cell[0]][start_cell[1]] = self._maze.CELL_START
 
+        self.__create_maze_ellers(width, height)
         if(record_vid):
             self._maze_visualizer.generate_frame(self._maze)
             self._maze_visualizer.stop_recording()
 
-        self._maze_visualizer.generate_snapshot(self._maze)
+        #self._maze_visualizer.generate_snapshot(self._maze)
         return

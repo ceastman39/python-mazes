@@ -87,8 +87,6 @@ class MazeGenerator:
                 return check_cell
         return (-1, -1)
 
-        return "top";
-
     def __check_bottom(self, cell):
         check_cell = (cell[0] + 1, cell[1])
         if(check_cell[0] < len(self._maze)):

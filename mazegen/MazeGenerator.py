@@ -5,7 +5,7 @@ from shutil import rmtree
 from random import randint, sample
 '''
 =====================================================================
-|| MazeGen.py:
+|| MazeGenerator.py:
 ||  Used to create a solveable maze, with the option to export as raw
 ||  data or as an image file.
 =====================================================================

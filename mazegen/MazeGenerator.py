@@ -28,35 +28,30 @@ class MazeGenerator:
 
 
     def __create_maze_ellers(self, width, height):
-        #Create first row, each node is it's own set.
-        row = [MazeNode.MazeNode(default_node_value = False, set = i+1) for i in range(self._maze.width)]
-        row[0].left_node = True
-
-        for i in range(1, self._maze.width):
-
-            # Randomly union together sets of cells
+        set_num = 1
+        self._maze[0][0].node_set = set_num
+        #Assign node sets, give connections/walls
+        set_start = 0
+        for x in range(self._maze.width-1):
             if(randint(0, 1) == 1):
-                row[i].node_set = row[i-1].node_set
+                #Remove walls
+                self._maze[0][x].right_node = self._maze[0][x+1]
+                self._maze[0][x+1].left_node = self._maze[0][x]
+                self._maze[0][x+1].node_set = set_num
             else:
-                row[i].left_node = True
-                row[i-1].right_node = True
-        row[self._maze.width-1].right_node = True
+                set_num += 1
+                self._maze[0][x+1].node_set = set_num
+                #Remove floors
+                add_floor = sample(range(set_start, x+1), randint(1, x-set_start+1))
+                #print(f"From {set_start} to {x} => {add_floor}")
+                for index in add_floor:
+                    self._maze[0][index].bottom_node = self._maze[1][index]
+                    self._maze[1][index].top_node = self._maze[0][index].bottom_node
+                set_start = x + 1
 
-        #Add bottom floor
-        bottom_in_set = False
-        curr_set = row[0].node_set
-        for x in range(self._maze.width - 1):
-            if(row[i+1])
-            #=======TODO=======
+        #======== TO DO ========
 
-        self._maze.append(row)
-        self._maze.append(row)
-        #Add top
-        for node in self._maze[0]:
-            node.top_node = True
 
-        for y in range(1, self._maze.height):
-            for node in self._maze[y]:
 
 
     # ========================================

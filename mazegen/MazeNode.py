@@ -1,10 +1,10 @@
 class MazeNode:
     def __init__(self, default_node_value = None, set = None):
-        self._top_node = default_node_value
+        self._top_node    = default_node_value
         self._bottom_node = default_node_value
-        self._left_node = default_node_value
-        self._right_node = default_node_value
-        self._node_set = set
+        self._left_node   = default_node_value
+        self._right_node  = default_node_value
+        self._node_set    = set
 
     @property
     def node_set(self):
@@ -24,7 +24,7 @@ class MazeNode:
 
     @property
     def bottom_node(self):
-        return self._top_node
+        return self._bottom_node
 
     @bottom_node.setter
     def bottom_node(self, value):

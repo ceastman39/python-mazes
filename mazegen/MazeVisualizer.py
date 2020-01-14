@@ -6,7 +6,8 @@ from shutil import rmtree
 class MazeVisualizer:
 
     def __init__(self, tmp_frame_dir = ".\\tmp_frame_dir\\",
-                 framerate = 30, mp4_out_name = "gen.mp4", upscale_factor = 1):
+                 framerate = 30, mp4_out_name = "gen.mp4",
+                 upscale_factor = 1):
         self._BLACK   = (0, 0, 0)
         self._WHITE   = (255, 255, 255)
         self._RED     = (255, 0, 0)

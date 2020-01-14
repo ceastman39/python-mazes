@@ -1,4 +1,4 @@
-import png, os
+import png, os, copy
 from mazegen import Maze, MazeVisualizer, MazeNode
 from random import randint, sample
 
@@ -49,7 +49,20 @@ class MazeGenerator:
                     self._maze[1][index].top_node = self._maze[0][index].bottom_node
                 set_start = x + 1
 
-        #======== TO DO ========
+        self._maze.insert_row(row)
+
+        for y in range(1, self._maze.height-1):
+            row = copy.deepcopy(self._maze[y-1])
+            for x in range(self._maze.width):
+                row[x].right_node = None
+                if(row[x].bottom_node):
+                    row[x].bottom_node = None
+                    row[x].node_set = this._maze[y-1][x].node_set
+                else:
+                    row[x].bottom_node = set_num
+                    set_num += 1
+
+
 
 
 

@@ -1,3 +1,5 @@
+from mazegen import MazeNode
+
 class Maze:
     def __init__(self, height, width):
         self._CELL_WALL       = 0
@@ -9,14 +11,17 @@ class Maze:
         self._height    = height
         self._width     = width
 
-        self._data = [[self._CELL_WALL for i in range(height)] for j in range(width)]
+        self._data = [[MazeNode.MazeNode() for x in range(width)] for y in range(height)]
 
 
     def __getitem__(self, index):
         return self._data[index]
 
     def __setitem__(self, index, value):
-        this._data[index] = value
+        self._data[index] = value
+
+    def insert_row(self, value):
+        self._data.append(value)
 
     # =====================
     # START GETTERS/SETTERS

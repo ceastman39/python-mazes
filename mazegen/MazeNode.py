@@ -5,6 +5,7 @@ class MazeNode:
         self._left_node   = default_node_value
         self._right_node  = default_node_value
         self._node_set    = set
+        self._NODE_STATE  = None
 
     @property
     def node_set(self):

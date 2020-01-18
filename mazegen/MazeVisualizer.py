@@ -25,7 +25,7 @@ class MazeVisualizer:
         self._TEMP_FRAME_DIR = tmp_frame_dir
         self._FRAME_PREF     = "frame_"
         self._FRAME_TYPE     = ".png"
-        self._FFMPEG_OPTIONS = "-hide_banner"
+        self._FFMPEG_OPTIONS = "-hide_banner -loglevel panic"
         self._FFMPEG_PATH    = f'{self._TEMP_FRAME_DIR}{self._FRAME_PREF}%d{self._FRAME_TYPE}'
         self._FFMPEG_VCODEC  = "mpeg4"
         self._VIDEO_NAME     = mp4_out_name
